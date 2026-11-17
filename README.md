@@ -104,4 +104,33 @@ PORT=3000 npm run dev
 
 ## Teknologi
 
-Node.js · Hono · TypeScript · Vanilla JS (ES modules) · Canvas API · PWA
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="https://img.shields.io/badge/Node.js-5FA04E?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js"><br>
+      <sub>Runtime server</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://img.shields.io/badge/Hono-E36002?style=flat-square&logo=hono&logoColor=white" alt="Hono"><br>
+      <sub>Framework HTTP</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"><br>
+      <sub>Tipe statis</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript"><br>
+      <sub>Modul ES tanpa framework</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://img.shields.io/badge/Canvas_API-E34F26?style=flat-square" alt="Canvas API"><br>
+      <sub>Render kamera dan overlay</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://img.shields.io/badge/PWA-5A0FC8?style=flat-square&logo=pwa&logoColor=white" alt="PWA"><br>
+      <sub>Offline dan bisa dipasang</sub>
+    </td>
+  </tr>
+</table>
