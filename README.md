@@ -9,13 +9,13 @@ gambar referensi di layar, lalu jiplak. Gratis, offline, dan tanpa install.
 
 ## Fitur
 
-- **Langsung dari browser** — tidak perlu unduh atau memasang aplikasi.
+- **Langsung dari browser** — tanpa unduh dan tanpa instal aplikasi.
 - **Bisa offline** — setelah dibuka sekali, aplikasi tersimpan di perangkat
   (PWA).
-- **Kamera penuh layar** — tampilan kamera belakang untuk menjiplak di kertas.
+- **Kamera penuh layar** — tampilan kamera belakang sebagai alas menjiplak.
 - **Mode sketsa** — gambar diubah menjadi garis secara otomatis.
 - **Gestur alami** — geser satu jari, cubit untuk zoom, putar dengan dua jari.
-- **Panel klasik** — atur opasitas, skala, rotasi, grid, dan kunci posisi.
+- **Panel kontrol** — atur opasitas, skala, rotasi, grid, dan kunci posisi.
 - **Simpan hasil** — simpan tampilan kamera beserta jiplakan sebagai PNG.
 
 ## Mulai
@@ -45,12 +45,10 @@ npm start
 
 ## Catatan kamera
 
-Browser hanya mengizinkan kamera pada **secure context**:
+Browser hanya mengizinkan kamera pada secure context, yaitu `http://localhost`
+atau alamat `https://`. Alamat IP LAN seperti `http://192.168.x.x` tidak bisa
+membuka kamera. Untuk menguji di HP, arahkan tunnel HTTPS ke server lokal.
 
-- `http://localhost` di perangkat yang sama, atau
-- alamat **https://**, misalnya lewat Cloudflare Tunnel atau ngrok.
-
-Alamat IP LAN biasa seperti `http://192.168.x.x` tidak bisa membuka kamera.
 Kalau izin pernah ditolak, buka pengaturan situs di browser, ubah izin kamera
 menjadi **Allow**, lalu muat ulang halaman.
 
@@ -58,27 +56,27 @@ menjadi **Allow**, lalu muat ulang halaman.
 
 ```text
 .
-├── dev.ts                  # Server lokal: API + static + fallback
-├── api/[...route].ts       # Entry Vercel Function (catch-all /api/*)
+├── dev.ts                  # Server lokal: API, static, dan fallback SPA
+├── api/[...route].ts       # Entry API untuk Vercel
 ├── src/
-│   ├── app.ts              # Hono app: middleware + API
+│   ├── app.ts              # Hono app: middleware dan API
 │   ├── middleware/logger.ts
 │   └── routes/api.ts
 ├── public/                 # Semua aset yang dikirim ke browser
-│   ├── index.html          # Markup + sprite ikon SVG
+│   ├── index.html          # Markup dan sprite ikon SVG
 │   ├── css/style.css       # Tema klasik (kuningan, serif, bottom sheet)
 │   ├── js/                 # Modul ES: kamera, gesture, overlay, sketsa, dll.
 │   ├── manifest.json       # Metadata PWA
 │   ├── sw.js               # Service worker untuk mode offline
 │   └── icon.svg
-├── vercel.json             # Konfigurasi deploy Vercel
+├── vercel.json             # Konfigurasi hosting Vercel
 ├── package.json
 ├── tsconfig.json
 └── docs/demo.gif           # GIF demo untuk README
 ```
 
-Tidak ada build step. Frontend dimuat langsung oleh browser, server dijalankan
-dengan `tsx`.
+Tidak ada build step. Frontend dimuat langsung oleh browser, sedangkan server
+dijalankan dengan `tsx`.
 
 ## API
 
@@ -107,32 +105,3 @@ PORT=3000 npm run dev
 ## Teknologi
 
 Node.js · Hono · TypeScript · Vanilla JS (ES modules) · Canvas API · PWA
-
-## Deploy
-
-### Vercel
-
-Project ini sudah disiapkan untuk [Vercel](https://vercel.com). File `public/`
-disajikan lewat CDN, sedangkan `/api/*` dijalankan sebagai Vercel Function lewat
-`api/[...route].ts`. Semua pengaturan ada di `vercel.json`, jadi tidak perlu
-build command atau output directory.
-
-Cara paling mudah:
-
-1. Buka [vercel.com/new](https://vercel.com/new), lalu pilih repo GitHub ini.
-2. Klik **Deploy**.
-
-Atau lewat CLI:
-
-```bash
-npx vercel
-npx vercel --prod
-```
-
-Domain Vercel sudah memakai HTTPS, jadi kamera langsung bisa dibuka.
-
-### Platform Node lain
-
-Karena server-nya Node.js biasa, `npm start` juga bisa dijalankan di Railway,
-Render, Fly.io, atau VPS. Pastikan platform memberi HTTPS agar browser
-mengizinkan akses kamera.
