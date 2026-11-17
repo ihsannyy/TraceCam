@@ -1,0 +1,29 @@
+{
+  "name": "tracecam",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Jiplak gambar apa saja pakai kamera HP.",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "tsx watch dev.ts",
+    "start": "tsx dev.ts",
+    "check": "tsc --noEmit",
+    "fmt": "prettier --write \"**/*.{ts,json}\""
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.8",
+    "hono": "^4.13.19"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "prettier": "^3.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}

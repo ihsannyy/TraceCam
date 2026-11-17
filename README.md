@@ -20,16 +20,17 @@ gambar referensi di layar, lalu jiplak. Gratis, offline, dan tanpa install.
 
 ## Mulai
 
-Butuh [Deno](https://deno.com) 2.x.
+Butuh [Node.js](https://nodejs.org) 20 atau lebih baru.
 
 ```bash
-deno task dev
+npm install
+npm run dev
 ```
 
 Buka `http://localhost:8080`. Untuk menjalankan tanpa watch:
 
 ```bash
-deno task start
+npm start
 ```
 
 ## Cara pakai
@@ -57,10 +58,10 @@ menjadi **Allow**, lalu muat ulang halaman.
 
 ```text
 .
-├── server.ts               # Entry point: menjalankan Deno.serve
-├── deno.json               # Task, import map, dan konfigurasi format
+├── dev.ts                  # Server lokal: API + static + fallback
+├── api/[...route].ts       # Entry Vercel Function (catch-all /api/*)
 ├── src/
-│   ├── app.ts              # Rakit Hono: middleware, API, static, fallback
+│   ├── app.ts              # Hono app: middleware + API
 │   ├── middleware/logger.ts
 │   └── routes/api.ts
 ├── public/                 # Semua aset yang dikirim ke browser
@@ -70,10 +71,14 @@ menjadi **Allow**, lalu muat ulang halaman.
 │   ├── manifest.json       # Metadata PWA
 │   ├── sw.js               # Service worker untuk mode offline
 │   └── icon.svg
+├── vercel.json             # Konfigurasi deploy Vercel
+├── package.json
+├── tsconfig.json
 └── docs/demo.gif           # GIF demo untuk README
 ```
 
-Tidak ada build step. Semua modul di `public/js/` dimuat langsung oleh browser.
+Tidak ada build step. Frontend dimuat langsung oleh browser, server dijalankan
+dengan `tsx`.
 
 ## API
 
@@ -86,26 +91,48 @@ Path `/api/*` yang tidak dikenal mengembalikan `404` dalam format JSON.
 
 ## Perintah
 
-| Perintah          | Fungsi                       |
-| ----------------- | ---------------------------- |
-| `deno task dev`   | Jalankan server dengan watch |
-| `deno task start` | Jalankan server tanpa watch  |
-| `deno task check` | Type-check TypeScript        |
-| `deno task fmt`   | Format kode                  |
-| `deno task lint`  | Lint kode                    |
+| Perintah        | Fungsi                       |
+| --------------- | ---------------------------- |
+| `npm run dev`   | Jalankan server dengan watch |
+| `npm start`     | Jalankan server tanpa watch  |
+| `npm run check` | Type-check TypeScript        |
+| `npm run fmt`   | Format kode dengan Prettier  |
 
 Port bisa diubah lewat environment variable `PORT`:
 
 ```bash
-PORT=3000 deno task dev
+PORT=3000 npm run dev
 ```
 
 ## Teknologi
 
-Deno · Hono · TypeScript · Vanilla JS (ES modules) · Canvas API · PWA
+Node.js · Hono · TypeScript · Vanilla JS (ES modules) · Canvas API · PWA
 
 ## Deploy
 
-Deploy `server.ts` ke [Deno Deploy](https://deno.com/deploy). Untuk platform
-lain, ganti `serveStatic` dari `@hono/hono/deno` dengan adapter static yang
-sesuai.
+### Vercel
+
+Project ini sudah disiapkan untuk [Vercel](https://vercel.com). File `public/`
+disajikan lewat CDN, sedangkan `/api/*` dijalankan sebagai Vercel Function lewat
+`api/[...route].ts`. Semua pengaturan ada di `vercel.json`, jadi tidak perlu
+build command atau output directory.
+
+Cara paling mudah:
+
+1. Buka [vercel.com/new](https://vercel.com/new), lalu pilih repo GitHub ini.
+2. Klik **Deploy**.
+
+Atau lewat CLI:
+
+```bash
+npx vercel
+npx vercel --prod
+```
+
+Domain Vercel sudah memakai HTTPS, jadi kamera langsung bisa dibuka.
+
+### Platform Node lain
+
+Karena server-nya Node.js biasa, `npm start` juga bisa dijalankan di Railway,
+Render, Fly.io, atau VPS. Pastikan platform memberi HTTPS agar browser
+mengizinkan akses kamera.

@@ -1,4 +1,4 @@
-import type { MiddlewareHandler } from "@hono/hono";
+import type { MiddlewareHandler } from "hono";
 
 export const logger: MiddlewareHandler = async (c, next) => {
   const start = Date.now();

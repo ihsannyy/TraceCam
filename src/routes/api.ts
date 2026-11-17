@@ -1,4 +1,4 @@
-import { Hono } from "@hono/hono";
+import { Hono } from "hono";
 
 export const api = new Hono();
 
@@ -7,7 +7,8 @@ api.get("/health", (c) =>
     ok: true,
     app: "tracecam",
     time: new Date().toISOString(),
-  }));
+  }),
+);
 
 api.post("/traces", async (c) => {
   const body = await c.req.json().catch(() => null);
