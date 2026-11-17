@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>TraceCam — Jiplak Gambar pakai Kamera</title>
+  <meta name="description" content="Jiplak gambar apa saja pakai kamera HP. Gratis, offline, tanpa install.">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="TraceCam — AR Tracing">
+  <meta property="og:description" content="Jiplak gambar pakai kamera HP. Gratis.">
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-aperture" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m14.31 8 5.74 9.94" />
+      <path d="M9.69 8h11.48" />
+      <path d="m7.38 12 5.74-9.94" />
+      <path d="M9.69 16 3.95 6.06" />
+      <path d="M14.31 16H2.83" />
+      <path d="m16.62 12-5.74 9.94" />
+    </symbol>
+
+    <symbol id="i-image" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="9" cy="9" r="2" />
+      <path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21" />
+    </symbol>
+
+    <symbol id="i-pencil" viewBox="0 0 24 24">
+      <path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z" />
+      <path d="m15 5 4 4" />
+    </symbol>
+
+    <symbol id="i-flip" viewBox="0 0 24 24">
+      <path d="M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3" />
+      <path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3" />
+      <path d="M12 20v2" />
+      <path d="M12 14v2" />
+      <path d="M12 8v2" />
+      <path d="M12 2v2" />
+    </symbol>
+
+    <symbol id="i-unlock" viewBox="0 0 24 24">
+      <rect width="18" height="11" x="3" y="11" rx="2" />
+      <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+    </symbol>
+
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <rect width="18" height="11" x="3" y="11" rx="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </symbol>
+
+    <symbol id="i-grid" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M3 15h18" />
+      <path d="M9 3v18" />
+      <path d="M15 3v18" />
+    </symbol>
+
+    <symbol id="i-reset" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+    </symbol>
+
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M12 15V3" />
+    </symbol>
+
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </symbol>
+
+    <symbol id="i-camera" viewBox="0 0 24 24">
+      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z" />
+      <circle cx="12" cy="13" r="3" />
+    </symbol>
+
+    <symbol id="i-ban" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m4.9 4.9 14.2 14.2" />
+    </symbol>
+
+    <symbol id="i-alert" viewBox="0 0 24 24">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </symbol>
+  </svg>
+
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="overlay"></canvas>
+  <div id="touchLayer"></div>
+
+  <div id="cameraGate" hidden>
+    <div class="gate-card">
+      <svg id="gateIcon" class="gate-icon icon" viewBox="0 0 24 24" aria-hidden="true">
+        <use href="#i-camera"></use>
+      </svg>
+      <h1 id="gateTitle">Aktifkan Kamera</h1>
+      <p id="gateMsg"></p>
+      <button id="btnAllowCamera" class="btn primary" type="button">Izinkan Kamera</button>
+      <button id="btnReload" class="btn ghost" type="button" hidden>Muat Ulang</button>
+      <button id="btnSkipCamera" class="btn ghost" type="button">Lanjut tanpa kamera</button>
+      <p id="gateDiag"></p>
+    </div>
+  </div>
+
+  <div id="status" data-state="pending" role="status" aria-live="polite">
+    <span class="status-dot"></span>
+    <span id="statusText">Kamera: cek izin…</span>
+  </div>
+
+  <button id="toggleBtn" type="button" aria-label="Buka/tutup panel" aria-controls="controls" aria-expanded="true">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <use href="#i-menu"></use>
+    </svg>
+  </button>
+
+  <aside id="controls" aria-label="Panel kontrol">
+    <div class="panel-grip" aria-hidden="true"></div>
+
+    <header class="panel-head">
+      <div class="brand">
+        <svg class="brand-mark icon" viewBox="0 0 24 24" aria-hidden="true">
+          <use href="#i-aperture"></use>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">TraceCam</span>
+          <span class="brand-tag">Tracing Studio</span>
+        </span>
+      </div>
+      <span class="head-rule" aria-hidden="true"></span>
+    </header>
+
+    <section class="tool-section">
+      <h2 class="section-label">Sumber</h2>
+      <div class="tool-grid cols-3">
+        <button id="btnPick" class="tool" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-image"></use>
+          </svg>
+          <span>Foto</span>
+        </button>
+        <button id="btnSketch" class="tool" type="button" aria-pressed="false">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-pencil"></use>
+          </svg>
+          <span>Sketsa</span>
+        </button>
+        <button id="btnMirror" class="tool" type="button" aria-pressed="false">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-flip"></use>
+          </svg>
+          <span>Cermin</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="tool-section">
+      <h2 class="section-label">Alat</h2>
+      <div class="tool-grid cols-4">
+        <button id="btnLock" class="tool" type="button" aria-pressed="false">
+          <svg class="icon icon-unlock" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-unlock"></use>
+          </svg>
+          <svg class="icon icon-lock" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-lock"></use>
+          </svg>
+          <span>Kunci</span>
+        </button>
+        <button id="btnGrid" class="tool" type="button" aria-pressed="false">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-grid"></use>
+          </svg>
+          <span>Grid</span>
+        </button>
+        <button id="btnReset" class="tool" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-reset"></use>
+          </svg>
+          <span>Reset</span>
+        </button>
+        <button id="btnSave" class="tool" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#i-download"></use>
+          </svg>
+          <span>Simpan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="slider-section">
+      <div class="slider-row">
+        <label for="opacity">Opasitas</label>
+        <input type="range" id="opacity" min="0" max="100" value="45">
+        <output id="opacityVal" for="opacity">45%</output>
+      </div>
+      <div class="slider-row">
+        <label for="scale">Skala</label>
+        <input type="range" id="scale" min="10" max="300" value="100">
+        <output id="scaleVal" for="scale">100%</output>
+      </div>
+      <div class="slider-row">
+        <label for="rotate">Rotasi</label>
+        <input type="range" id="rotate" min="-180" max="180" value="0">
+        <output id="rotateVal" for="rotate">0°</output>
+      </div>
+    </section>
+  </aside>
+
+  <input type="file" id="fileInput" accept="image/*" hidden>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+.deno/
+deno.lock
+
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+
+.env
+.env.local
